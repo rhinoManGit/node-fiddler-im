@@ -24,24 +24,29 @@ var start = function(options) {
         for (var key in urlObj) {
             req[key] = urlObj[key];
         }
-        // console.log(urlObj,222);
+
         // set config for middlewares.
         req.config = config;
 
         middleware.use(req, res, function() {
-            //
             request({
                 method: req.method,
                 url: req.url,
                 headers: req.headers
-            }).pipe(res);
-
+            })
+            .on('error',function(err){
+                console.log('error:',err,req.url);
+                res.writeHead(500);
+                res.end('server error');
+            })
+            .pipe(res);
         });
 
     }).listen(config.port);
+
+    console.log('start listen port:',config.port);
 };
 
-start();
 
 
 module.exports = {

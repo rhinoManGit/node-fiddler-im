@@ -42,13 +42,17 @@ var getExt = function(filePath) {
 // 直接发送文件~~~
 var sendFile = function(req, res) {
     return function(filePath) {
-        fs.readFile(filePath, function(err, data) {
-            if (err) throw err;
-            res.writeHead(200, {
-                'Content-Type': getMimeTypes(getExt(req.pathname))
+        if(fs.existsSync(filePath)){
+            fs.readFile(filePath, function(err, data) {
+                if (err) throw err;
+                res.writeHead(200, {
+                    'Content-Type': getMimeTypes(getExt(filePath))
+                });
+                res.end(data);
             });
-            res.end(data);
-        });
+        }else{
+            console.log('error:','not found file:'+filePath);
+        }
     };
 };
 
@@ -79,7 +83,7 @@ var matchRule = function(req, res, next) {
             // 其他规则
             var pos = req.url.indexOf(rule.match);
             if (pos > -1) {
-                req.matchFile = req.url.substr(pos);
+                req.matchFile = req.url.substr(pos+rule.match.length);
                 return matchActions(req, res, next)(rule);
             }
 
@@ -92,13 +96,16 @@ var matchRule = function(req, res, next) {
 // 匹配各种action~
 var matchActions = function(req, res, next) {
     return function(rule) {
+
         // 忽略该请求，直接转发
         if (rule.action.indexOf('[Ignore]') === 0) {
             return next();
         }
 
         // 单文件
-        if (isFile(rule.action)) return sendFile(req, res)(rule.action);
+        if (isFile(rule.action)) {
+            return sendFile(req, res)(rule.action);
+        }
 
         // 目录
         if (isFolder(rule.action)) {
