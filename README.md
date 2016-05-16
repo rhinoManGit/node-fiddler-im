@@ -10,7 +10,7 @@ npm install node-fiddler-im
 本地配置代理，指向 127.0.0.1:8006。
 
 ``` javascript
-require('macfiddler').start({
+require('node-fiddler-im').start({
     port: 8006,
     projects:[
         {
@@ -38,7 +38,7 @@ require('macfiddler').start({
 ### 中间件
 
 ``` javascript
-require('macfiddler').applyMiddleware(function(req,res,next){
+require('node-fiddler-im').applyMiddleware(function(req,res,next){
     req.setHeader('xxx','xxx');
     return next();
 });
