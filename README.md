@@ -21,7 +21,7 @@ require('macfiddler').start({
                 },
                 {
                     match:'//ke.qq.com/',
-                    action:'c:\test\'
+                    action:'c:\\test\\'
                 }   
             ],
             hosts:[
