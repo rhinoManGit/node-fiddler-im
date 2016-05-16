@@ -1,7 +1,7 @@
 {
-  "name": "macfiddler",
+  "name": "node-fiddler",
   "version": "1.0.0",
-  "description": "mac下的fiddler",
+  "description": "fiddler",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-proxy": "^1.13.2"
+    "request": "^2.72.0"
   }
 }
